@@ -33,20 +33,19 @@ public class DataUtil {
 
                     Data data = new Data();
 
-                    //data.setTitle(dataJSONObject2.getString("im:name"));
-                    //JSONArray nameArray = appArray.getJSONArray(i);
                     JSONObject nameObject = entryArray.getJSONObject(i);
                     JSONObject nameObject2 = nameObject.getJSONObject("im:name");
                     data.setTitle(nameObject2.getString("label"));
-                    //Log.d("DEMO",entryArray.getString(0));
-                    //Log.d("NAME",nameObject2.getString("label"));
+
+                    JSONObject imgObject = entryArray.getJSONObject(i);
+                    JSONArray imgArray2 = imgObject.getJSONArray("im:image");
+                    JSONObject imgObject2 = imgArray2.getJSONObject(0);
+                    data.setImage(imgObject2.getString("label"));
 
                     JSONObject priceObject = entryArray.getJSONObject(i);
                     JSONObject priceObject2 = priceObject.getJSONObject("im:price");
                     JSONObject priceAttributes = priceObject2.getJSONObject("attributes");
-                    //data.setTitle(nameObject.getString("label"));
-                    //Log.d("DEMO",entryArray.getString(0));
-                    //Log.d("PRICE",priceAttributes.getString("amount"));
+
                     data.setPrice(Double.parseDouble(priceAttributes.getString("amount")));
 
                     dataList.add(data);

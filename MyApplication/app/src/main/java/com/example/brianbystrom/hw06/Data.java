@@ -11,8 +11,16 @@ package com.example.brianbystrom.hw06;
  */
 
 public class Data {
-    String title;
+    String title, image;
     Double price;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getTitle() {
         return title;
