@@ -42,6 +42,11 @@ public class DataUtil {
                     JSONObject imgObject2 = imgArray2.getJSONObject(0);
                     data.setImage(imgObject2.getString("label"));
 
+                    JSONObject idObject = entryArray.getJSONObject(i);
+                    JSONObject idObject2 = idObject.getJSONObject("id");
+                    JSONObject idObject3 = idObject2.getJSONObject("attributes");
+                    data.setId(idObject3.getString("im:id"));
+
                     JSONObject priceObject = entryArray.getJSONObject(i);
                     JSONObject priceObject2 = priceObject.getJSONObject("im:price");
                     JSONObject priceAttributes = priceObject2.getJSONObject("attributes");

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/refresh_item"
+        android:id="@+id/refresh_list" />
+    <item android:title="@string/favorites_item"
+        android:id="@+id/favorites" />
+    <item android:title="@string/sort_inc_item"
+        android:id="@+id/sort_inc" />
+    <item android:title="@string/sort_dec_item"
+        android:id="@+id/sort_dec" />
+</menu>

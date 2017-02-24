@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HW06</string>
+    <string name="refresh_item">Refresh List</string>
+    <string name="favorites_item">Favorites</string>
+    <string name="sort_inc_item">Sort Incresingly</string>
+    <string name="sort_dec_item">Sort Decresingly</string>
 </resources>

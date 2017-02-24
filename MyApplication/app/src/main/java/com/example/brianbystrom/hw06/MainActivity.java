@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,15 +31,29 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
         new GetAppsAsync(MainActivity.this).execute(created_URL);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public void onGroupItemClick(MenuItem item) {
+        // One of the group items (using the onClick attribute) was clicked
+        // The item parameter passed here indicates which item it is
+        // All other menu item clicks are handled by onOptionsItemSelected()
+        //Log.d("MENU", "MENU ITEM: " + item);
+    }
+
     public void setupData(final ArrayList<Data> s) {
 
         for (int i = 0; i < s.size(); i++) {
             Log.d("DEMO", "Title: " + s.get(i).getTitle());
             Log.d("DEMO", "Price: " + s.get(i).getPrice());
             Log.d("Demo", "Image: " + s.get(i).getImage());
+            Log.d("Demo", "ID: " + s.get(i).getId());
         }
 
-        try {
+
             if (s.size() > 0) {
 
 
@@ -57,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
                 });*/
 
 
-                lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                //lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
 
@@ -81,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
                 });*/
 
             }
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-            Toast.makeText(MainActivity.this, "API timed out or results returned no games, please try again.", Toast.LENGTH_SHORT).show();
-            //pb.setVisibility(GONE);
-        }
+
     }
 }

@@ -14,14 +14,15 @@
     <TextView
         android:text="TextView"
         android:layout_width="257dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/appInfo"
-        android:gravity="left" />
+        android:gravity="center_vertical|left"
+        android:textAlignment="gravity" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        app:srcCompat="@mipmap/unfavorite"
         android:id="@+id/favoriteImage"
         android:layout_weight="1" />
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by brianbystrom on 2/23/17.
  */
 
-public class AppAdapter extends ArrayAdapter<Data> {
+public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IData {
 
     List<Data> mData;
     Context mContext;
@@ -33,6 +34,7 @@ public class AppAdapter extends ArrayAdapter<Data> {
     TextView tv;
     int year;
     ImageView game_image;
+    ImageButton favorite_image;
 
     public AppAdapter(Context context, int resource, List<Data> objects) {
         super(context, resource, objects);
@@ -48,21 +50,28 @@ public class AppAdapter extends ArrayAdapter<Data> {
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(mResource, parent, false);
+        }
+
             //rg = (RadioGroup) convertView.findViewById(R.id.game_list_radio_group);
             tv = (TextView) convertView.findViewById(R.id.appInfo);
             Data data = mData.get(position);
-            //game_image = (ImageView) convertView.findViewById(R.id.appImage);
+            Log.d("Adapter", data.getTitle());
+            Log.d("Adapter", "SIZE " + position);
+            game_image = (ImageView) convertView.findViewById(R.id.appImage);
+            favorite_image = (ImageButton) convertView.findViewById(R.id.favoriteImage);
+            //favorite_image.setId(Integer.parseInt(data.getId()));
 
-            //String created_URL = "http://thegamesdb.net/api/GetGame.php?id=" + data.getId();
+            favorite_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("FAVORITE", "CLICKED: " + v.getId());
+                }
+            });
+
+            //String created_URL = data.getImage();
             //new GetGameInfoAsync(GameAdapter.this).execute(created_URL);
 
-            //new SetImageAsync(AppAdapter.this).execute("http://thegamesdb.net/banners/clearlogo/" + data.getId() + ".png");
-
-
-
-
-
-//and so on
+            new SetImageAsync(AppAdapter.this).execute(data.getImage());
 
             tv.setText(data.getTitle() + "\nPrice: $" + data.getPrice().toString());
 
@@ -70,7 +79,7 @@ public class AppAdapter extends ArrayAdapter<Data> {
             //rb.setText(data.getTitle());
             //rg.addView(rb);
 
-        }
+
 
 
 
@@ -96,7 +105,7 @@ public class AppAdapter extends ArrayAdapter<Data> {
 
         }
 
-    }
+    }*/
 
     public void setupImage(Bitmap bitmap) {
 
@@ -105,7 +114,7 @@ public class AppAdapter extends ArrayAdapter<Data> {
         game_image.setImageBitmap(bitmap);
 
 
-    }*/
+    }
 
 }
 
