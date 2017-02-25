@@ -6,14 +6,39 @@ Group Members: Brian Bystrom, Mohamed Salad
 
 package com.example.brianbystrom.hw06;
 
+import java.util.Comparator;
+
 /**
  * Created by brianbystrom on 2/6/17.
  */
 
-public class Data {
+public class Data implements Comparable<Data> {
     String title, image, id;
     Double price;
     Boolean favorite;
+
+    public int compareTo(Data d)
+    {
+        return getPrice().compareTo(d.getPrice());
+    }
+
+
+
+    static class AgeComparator implements Comparator<Data>
+    {
+        public int compare(Data d1, Data d2)
+        {
+            Double app1 = d1.getPrice();
+            Double app2 = d2.getPrice();
+
+            if (app1 == app2)
+                return 0;
+            else if (app1 > app2)
+                return 1;
+            else
+                return -1;
+        }
+    }
 
     public String getId() {
         return id;

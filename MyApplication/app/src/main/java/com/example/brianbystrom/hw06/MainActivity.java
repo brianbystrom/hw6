@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -30,6 +32,11 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     public static final String Name = "nameKey";
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
+    MenuItem refresh, sortInc, sortDec, fav;
+    ProgressBar mainPB;
+    AppAdapter adapter;
+    ArrayList<Data> appList;
+
 
     SharedPreferences sharedpreferences;
 
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
+
         String created_URL = "https://itunes.apple.com/us/rss/toppaidapplications/limit=25/json";
         new GetAppsAsync(MainActivity.this).execute(created_URL);
     }
@@ -47,14 +55,45 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.refresh_list:
+                Log.d("REFRESH", "CLICKED");
+                String created_URL = "https://itunes.apple.com/us/rss/toppaidapplications/limit=25/json";
+                new GetAppsAsync(MainActivity.this).execute(created_URL);
+                lv = (ListView) findViewById(R.id.appListView);
+                lv.setVisibility(GONE);
+                mainPB = (ProgressBar) findViewById(R.id.mainPB);
+                mainPB.setVisibility(VISIBLE);
+                return true;
+            case R.id.favorites:
+                Log.d("FAVORITES", "CLICKED");
+                return true;
+            case R.id.sort_inc:
+                Collections.sort(appList);
+                adapter.notifyDataSetChanged();
+                return true;
+            case R.id.sort_dec:
+                Collections.sort(appList, Collections.<Data>reverseOrder());
+                adapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onGroupItemClick(MenuItem item) {
         // One of the group items (using the onClick attribute) was clicked
         // The item parameter passed here indicates which item it is
         // All other menu item clicks are handled by onOptionsItemSelected()
-        //Log.d("MENU", "MENU ITEM: " + item);
+        Log.d("MENU", "MENU ITEM: " + item);
     }
 
     public void setupData(final ArrayList<Data> s) {
@@ -65,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
             }
         }
 
+        mainPB = (ProgressBar) findViewById(R.id.mainPB);
+
+
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
         String name = sharedpreferences.getString(Name, "");
@@ -73,12 +115,17 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
 
             if (s.size() > 0) {
 
+                appList = s;
+
 
                 //ListView lv = new ListView(MainActivity.this);
                 //ArrayAdapter<Data> adapter = new ArrayAdapter<Data>(this, android.R.layout.simple_list_item_1, s);
                 lv = (ListView) findViewById(R.id.appListView);
-                AppAdapter adapter = new AppAdapter(this, R.layout.app_list_layout, s, MainActivity.this);
+                adapter = new AppAdapter(this, R.layout.app_list_layout, appList, MainActivity.this);
                 lv.setAdapter(adapter);
+
+                mainPB.setVisibility(GONE);
+                lv.setVisibility(VISIBLE);
 
                 /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
