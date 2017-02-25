@@ -1,7 +1,9 @@
 package com.example.brianbystrom.hw06;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -21,7 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by brianbystrom on 2/23/17.
@@ -34,16 +38,24 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
     int mResource;
     int selectedPosition = -1;
     RadioGroup rg;
+    Activity mActivity;
     TextView tv;
     int year;
     ImageView game_image;
     ImageButton favorite_image;
+    SharedPreferences sharedpreferences;
 
-    public AppAdapter(Context context, int resource, List<Data> objects) {
+
+
+
+    public AppAdapter(Context context, int resource, List<Data> objects, Activity parentActivity) {
         super(context, resource, objects);
         this.mContext = context;
         this.mData = objects;
         this.mResource = resource;
+        this.mActivity = parentActivity;
+
+
     }
 
     @NonNull
@@ -52,6 +64,10 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
 
         ImageButton favorite_image;
         View rowView= convertView;
+
+        sharedpreferences = mContext.getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+
+
 
         if(rowView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,27 +87,69 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
         final Data data = mData.get(position);
         viewHolder.appInfo.setText(data.getTitle() + "\nPrice: $" + data.getPrice().toString());
 
-        if(data.getFavorite()) viewHolder.favoriteImage.setImageResource(R.mipmap.favorite);
+        if(sharedpreferences.contains(data.getId())) viewHolder.favoriteImage.setImageResource(R.mipmap.favorite);
         else viewHolder.favoriteImage.setImageResource(R.mipmap.unfavorite);
+
+        Log.d("SP", "TITLE: " + data.getTitle() + " SP: " + sharedpreferences.contains(data.getId()));
 
         viewHolder.favoriteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(data.getFavorite()) {
-                    data.setFavorite(false);
+
+                    new AlertDialog.Builder(mActivity)
+                            .setTitle("Remove favorite?")
+                            .setMessage("Do you really want to remove favorite?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    data.setFavorite(false);
+                                    Log.d("NAME", "TITLE: " + data.getTitle());
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.remove(data.getId());
+                                    editor.commit();
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
                 } else {
-                    data.setFavorite(true);
+                    new AlertDialog.Builder(mActivity)
+                            .setTitle("Add favorite?")
+                            .setMessage("Do you really want to add favorite?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    data.setFavorite(true);
+                                    Log.d("NAME", "TITLE: " + data.getTitle());
+
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    Set<String> app = new HashSet<String>();
+                                    app.add(data.getId());
+                                    app.add(data.getTitle());
+                                    app.add(data.getPrice().toString());
+                                    app.add(data.getImage());
+                                    editor.putStringSet(data.getId(), app);
+                                    editor.commit();
+                                    notifyDataSetChanged();
+
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
                 }
 
-                notifyDataSetChanged();
+
             }
         });
 
 
         //rg = (RadioGroup) convertView.findViewById(R.id.game_list_radio_group);
             //tv = (TextView) rowLayout.findViewById(R.id.appInfo);
-            Log.d("Adapter", data.getTitle());
-            Log.d("Adapter", "SIZE " + position);
+           // Log.d("Adapter", data.getTitle());
+           // Log.d("Adapter", "SIZE " + position);
             //favorite_image = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
             //favorite_image.setOnClickListener(checkFavoriteHandler);
             //game_image = (ImageView) rowLayout.findViewById(R.id.appImage);
@@ -150,7 +208,6 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
     }
 
     public void changeFavorite(View v) {
-
     }
 
 }

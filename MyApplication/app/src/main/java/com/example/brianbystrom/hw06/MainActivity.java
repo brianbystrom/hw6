@@ -26,10 +26,19 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     ListView lv;
 //    SharedPreferences sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         String created_URL = "https://itunes.apple.com/us/rss/toppaidapplications/limit=25/json";
         new GetAppsAsync(MainActivity.this).execute(created_URL);
@@ -51,15 +60,15 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     public void setupData(final ArrayList<Data> s) {
 
         for (int i = 0; i < s.size(); i++) {
-            Log.d("DEMO", "Title: " + s.get(i).getTitle());
-            Log.d("DEMO", "Price: " + s.get(i).getPrice());
-            Log.d("Demo", "Image: " + s.get(i).getImage());
-            Log.d("Demo", "ID: " + s.get(i).getId());
+            if(sharedpreferences.contains(s.get(i).getId())) {
+                s.get(i).setFavorite(true);
+            }
         }
 
-        //SharedPreferences.Editor editor = sharedpreferences.edit();
-        //editor.putString("key", "value");
-        //editor.commit();
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        String name = sharedpreferences.getString(Name, "");
+        Log.d("NAME", name + " this was the name");
 
 
             if (s.size() > 0) {
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
                 //ListView lv = new ListView(MainActivity.this);
                 //ArrayAdapter<Data> adapter = new ArrayAdapter<Data>(this, android.R.layout.simple_list_item_1, s);
                 lv = (ListView) findViewById(R.id.appListView);
-                AppAdapter adapter = new AppAdapter(this, R.layout.app_list_layout, s);
+                AppAdapter adapter = new AppAdapter(this, R.layout.app_list_layout, s, MainActivity.this);
                 lv.setAdapter(adapter);
 
                 /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
