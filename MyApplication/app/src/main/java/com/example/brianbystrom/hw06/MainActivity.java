@@ -1,6 +1,9 @@
 package com.example.brianbystrom.hw06;
 
+import android.app.VoiceInteractor;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,7 @@ import static android.view.View.VISIBLE;
 public class MainActivity extends AppCompatActivity implements GetAppsAsync.IData  {
 
     ListView lv;
+//    SharedPreferences sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
             Log.d("Demo", "ID: " + s.get(i).getId());
         }
 
+        //SharedPreferences.Editor editor = sharedpreferences.edit();
+        //editor.putString("key", "value");
+        //editor.commit();
+
 
             if (s.size() > 0) {
 
@@ -67,11 +75,10 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Log.d("LISTVIEW", "Game ID: " + s.get(position).getId().toString() + " ID: " + id);
-                        Intent toGameDetails = new Intent(MainActivity.this, GameDetails.class);
-                        toGameDetails.putExtra("GAME_ID", s.get(position).getId().toString());
-                        startActivity(toGameDetails);
+
                     }
                 });*/
+
 
 
                 //lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

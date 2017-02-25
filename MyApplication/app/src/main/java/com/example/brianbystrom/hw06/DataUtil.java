@@ -27,33 +27,38 @@ public class DataUtil {
 
                 JSONArray entryArray = dataJSONObject.getJSONArray("entry");
 
+
                 for (int i = 0; i<entryArray.length(); i++) {
                     //JSONObject dataJSONObject2 = dataJSONObject.getJSONObject("entry");
-                    JSONArray appArray = dataJSONObject.getJSONArray("entry");
 
-                    Data data = new Data();
+                    if (entryArray.getJSONObject(i) != null) {
 
-                    JSONObject nameObject = entryArray.getJSONObject(i);
-                    JSONObject nameObject2 = nameObject.getJSONObject("im:name");
-                    data.setTitle(nameObject2.getString("label"));
+                        Data data = new Data();
 
-                    JSONObject imgObject = entryArray.getJSONObject(i);
-                    JSONArray imgArray2 = imgObject.getJSONArray("im:image");
-                    JSONObject imgObject2 = imgArray2.getJSONObject(0);
-                    data.setImage(imgObject2.getString("label"));
+                        JSONObject nameObject = entryArray.getJSONObject(i);
+                        JSONObject nameObject2 = nameObject.getJSONObject("im:name");
+                        data.setTitle(nameObject2.getString("label"));
 
-                    JSONObject idObject = entryArray.getJSONObject(i);
-                    JSONObject idObject2 = idObject.getJSONObject("id");
-                    JSONObject idObject3 = idObject2.getJSONObject("attributes");
-                    data.setId(idObject3.getString("im:id"));
+                        JSONObject imgObject = entryArray.getJSONObject(i);
+                        JSONArray imgArray2 = imgObject.getJSONArray("im:image");
+                        JSONObject imgObject2 = imgArray2.getJSONObject(0);
+                        data.setImage(imgObject2.getString("label"));
 
-                    JSONObject priceObject = entryArray.getJSONObject(i);
-                    JSONObject priceObject2 = priceObject.getJSONObject("im:price");
-                    JSONObject priceAttributes = priceObject2.getJSONObject("attributes");
+                        JSONObject idObject = entryArray.getJSONObject(i);
+                        JSONObject idObject2 = idObject.getJSONObject("id");
+                        JSONObject idObject3 = idObject2.getJSONObject("attributes");
+                        data.setId(idObject3.getString("im:id"));
 
-                    data.setPrice(Double.parseDouble(priceAttributes.getString("amount")));
+                        JSONObject priceObject = entryArray.getJSONObject(i);
+                        JSONObject priceObject2 = priceObject.getJSONObject("im:price");
+                        JSONObject priceAttributes = priceObject2.getJSONObject("attributes");
 
-                    dataList.add(data);
+                        data.setPrice(Double.parseDouble(priceAttributes.getString("amount")));
+
+                        data.setFavorite(false);
+
+                        dataList.add(data);
+                    }
 
                 }
             } catch (JSONException e) {

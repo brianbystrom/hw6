@@ -13,6 +13,7 @@ package com.example.brianbystrom.hw06;
 public class Data {
     String title, image, id;
     Double price;
+    Boolean favorite;
 
     public String getId() {
         return id;
@@ -20,6 +21,14 @@ public class Data {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 
     public String getImage() {
