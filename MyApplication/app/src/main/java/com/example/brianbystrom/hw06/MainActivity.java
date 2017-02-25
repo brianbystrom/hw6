@@ -1,5 +1,6 @@
 package com.example.brianbystrom.hw06;
 
+
 import android.app.VoiceInteractor;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +16,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -26,7 +30,6 @@ import static android.view.View.VISIBLE;
 public class MainActivity extends AppCompatActivity implements GetAppsAsync.IData  {
 
     ListView lv;
-//    SharedPreferences sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String Name = "nameKey";
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     ProgressBar mainPB;
     AppAdapter adapter;
     ArrayList<Data> appList;
+    TextView loadingText;
 
 
     SharedPreferences sharedpreferences;
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
         setContentView(R.layout.activity_main);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor clearEditor = sharedpreferences.edit();
+        clearEditor.clear();
+        clearEditor.commit();
 
 
         String created_URL = "https://itunes.apple.com/us/rss/toppaidapplications/limit=25/json";
@@ -55,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
-
         return true;
     }
 
@@ -71,10 +76,14 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
                 lv = (ListView) findViewById(R.id.appListView);
                 lv.setVisibility(GONE);
                 mainPB = (ProgressBar) findViewById(R.id.mainPB);
+                loadingText = (TextView) findViewById(R.id.loadingText);
+                loadingText.setVisibility(VISIBLE);
                 mainPB.setVisibility(VISIBLE);
                 return true;
             case R.id.favorites:
                 Log.d("FAVORITES", "CLICKED");
+                Intent toFavorites = new Intent(MainActivity.this, Favorites.class);
+                startActivity(toFavorites);
                 return true;
             case R.id.sort_inc:
                 Collections.sort(appList);
@@ -90,9 +99,6 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
     }
 
     public void onGroupItemClick(MenuItem item) {
-        // One of the group items (using the onClick attribute) was clicked
-        // The item parameter passed here indicates which item it is
-        // All other menu item clicks are handled by onOptionsItemSelected()
         Log.d("MENU", "MENU ITEM: " + item);
     }
 
@@ -109,58 +115,28 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
 
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
-        String name = sharedpreferences.getString(Name, "");
-        Log.d("NAME", name + " this was the name");
-
 
             if (s.size() > 0) {
 
                 appList = s;
-
-
-                //ListView lv = new ListView(MainActivity.this);
-                //ArrayAdapter<Data> adapter = new ArrayAdapter<Data>(this, android.R.layout.simple_list_item_1, s);
+                loadingText = (TextView) findViewById(R.id.loadingText);
                 lv = (ListView) findViewById(R.id.appListView);
                 adapter = new AppAdapter(this, R.layout.app_list_layout, appList, MainActivity.this);
                 lv.setAdapter(adapter);
 
                 mainPB.setVisibility(GONE);
+                loadingText.setVisibility(GONE);
                 lv.setVisibility(VISIBLE);
 
-                /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d("LISTVIEW", "Game ID: " + s.get(position).getId().toString() + " ID: " + id);
-
-                    }
-                });*/
-
-
-
-                //lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
-
-
-                /*pb.setVisibility(GONE);
-                lv.setVisibility(VISIBLE);
-
-                go_btn = (Button) findViewById(R.id.go_btn);
-                go_btn.setEnabled(true);
-
-                go_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (selected > -1) {
-                            Intent toGameDetails = new Intent(MainActivity.this, GameDetails.class);
-                            Log.d("SELECTED", "SELECTED: " + selected);
-                            toGameDetails.putExtra("GAME_ID", String.valueOf(selected));
-                            startActivity(toGameDetails);
-                        }
-                    }
-                });*/
-
+            } else {
+                Toast.makeText(MainActivity.this, "No apps were found please refresh using the menu in the top right.", Toast.LENGTH_SHORT).show();
             }
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.notifyDataSetChanged();
     }
 }

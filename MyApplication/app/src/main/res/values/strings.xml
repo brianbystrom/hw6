@@ -4,4 +4,5 @@
     <string name="favorites_item">Favorites</string>
     <string name="sort_inc_item">Sort Incresingly</string>
     <string name="sort_dec_item">Sort Decresingly</string>
+    <string name="loadingText">Loading</string>
 </resources>

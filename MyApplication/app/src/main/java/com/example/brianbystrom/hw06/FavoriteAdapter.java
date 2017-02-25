@@ -34,7 +34,7 @@ import java.util.Set;
  * Created by brianbystrom on 2/23/17.
  */
 
-public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IData {
+public class FavoriteAdapter extends ArrayAdapter<Data> implements SetImageAsync.IData {
 
     private final List<Data> mData;;
     Context mContext;
@@ -51,7 +51,7 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
 
 
 
-    public AppAdapter(Context context, int resource, List<Data> objects, Activity parentActivity) {
+    public FavoriteAdapter(Context context, int resource, List<Data> objects, Activity parentActivity) {
         super(context, resource, objects);
         this.mContext = context;
         this.mData = objects;
@@ -91,6 +91,7 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
         viewHolder.appInfo.setText(data.getTitle() + "\nPrice: $" + data.getPrice().toString());
         Picasso.with(mContext).load(data.getImage()).into(viewHolder.appImage);
 
+
         if(sharedpreferences.contains(data.getId())) viewHolder.favoriteImage.setImageResource(R.mipmap.favorite);
         else viewHolder.favoriteImage.setImageResource(R.mipmap.unfavorite);
 
@@ -112,31 +113,14 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
                                     SharedPreferences.Editor editor = sharedpreferences.edit();
                                     editor.remove(data.getId());
                                     editor.commit();
+                                    mData.remove(data);
                                     notifyDataSetChanged();
 
                                 }
                             })
                             .setNegativeButton(android.R.string.no, null).show();
                 } else {
-                    new AlertDialog.Builder(mActivity)
-                            .setTitle("Add favorite?")
-                            .setMessage("Do you really want to add favorite?")
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                                    String app;
-                                    app = data.getId() + "|" + data.getTitle() + "|" + data.getPrice().toString() + "|" + data.getImage();
-                                    Log.d("APP", app.toString());
-                                    editor.putString(data.getId(), app);
-                                    editor.commit();
-                                    data.setFavorite(true);
-                                    notifyDataSetChanged();
-
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, null).show();
                 }
 
 
@@ -145,26 +129,26 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
 
 
         //rg = (RadioGroup) convertView.findViewById(R.id.game_list_radio_group);
-            //tv = (TextView) rowLayout.findViewById(R.id.appInfo);
-           // Log.d("Adapter", data.getTitle());
-           // Log.d("Adapter", "SIZE " + position);
-            //favorite_image = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
-            //favorite_image.setOnClickListener(checkFavoriteHandler);
-            //game_image = (ImageView) rowLayout.findViewById(R.id.appImage);
-            //viewHolder.favoriteImage = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
-            //viewHolder.favoriteImage.setId(Integer.parseInt(data.getId()));
-            //Log.d("Adapter", "ID: " + favorite_image.getId());
+        //tv = (TextView) rowLayout.findViewById(R.id.appInfo);
+        // Log.d("Adapter", data.getTitle());
+        // Log.d("Adapter", "SIZE " + position);
+        //favorite_image = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
+        //favorite_image.setOnClickListener(checkFavoriteHandler);
+        //game_image = (ImageView) rowLayout.findViewById(R.id.appImage);
+        //viewHolder.favoriteImage = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
+        //viewHolder.favoriteImage.setId(Integer.parseInt(data.getId()));
+        //Log.d("Adapter", "ID: " + favorite_image.getId());
 
 
-            //String created_URL = data.getImage();
-            //new GetGameInfoAsync(GameAdapter.this).execute(created_URL);
+        //String created_URL = data.getImage();
+        //new GetGameInfoAsync(GameAdapter.this).execute(created_URL);
 
-            //new SetImageAsync(AppAdapter.this).execute(data.getImage());
+        //new SetImageAsync(AppAdapter.this).execute(data.getImage());
 
-            //tv.setId(Integer.parseInt(data.getId()));
-            //RadioButton rb = (RadioButton) convertView.findViewById(R.id.game_radio_button);
-            //rb.setText(data.getTitle());
-            //rg.addView(rb);
+        //tv.setId(Integer.parseInt(data.getId()));
+        //RadioButton rb = (RadioButton) convertView.findViewById(R.id.game_radio_button);
+        //rb.setText(data.getTitle());
+        //rg.addView(rb);
 
 
 

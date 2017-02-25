@@ -27,4 +27,13 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/mainPB" />
 
+    <TextView
+        android:text="@string/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mainPB"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:id="@+id/loadingText" />
+
 </RelativeLayout>
