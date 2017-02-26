@@ -1,3 +1,9 @@
+/*
+Assignment #: HW 06
+File Name: GetAppsAsync.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw06;
 
 import android.os.AsyncTask;

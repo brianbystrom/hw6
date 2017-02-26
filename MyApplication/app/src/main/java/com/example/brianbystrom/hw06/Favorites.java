@@ -1,3 +1,9 @@
+/*
+Assignment #: HW 06
+File Name: Favorites.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw06;
 
 import android.content.Context;

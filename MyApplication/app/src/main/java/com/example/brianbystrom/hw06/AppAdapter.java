@@ -1,3 +1,9 @@
+/*
+Assignment #: HW 06
+File Name: AppAdapter.java
+Group Members: Brian Bystrom, Mohamed Salad
+*/
+
 package com.example.brianbystrom.hw06;
 
 import android.app.Activity;
@@ -34,7 +40,7 @@ import java.util.Set;
  * Created by brianbystrom on 2/23/17.
  */
 
-public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IData {
+public class AppAdapter extends ArrayAdapter<Data> {
 
     private final List<Data> mData;;
     Context mContext;
@@ -101,10 +107,10 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
                 if(data.getFavorite()) {
 
                     new AlertDialog.Builder(mActivity)
-                            .setTitle("Remove favorite?")
-                            .setMessage("Do you really want to remove favorite?")
+                            .setTitle("Remove from favorites?")
+                            .setMessage("Are you sure you want to remove this App from favorites?")
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     data.setFavorite(false);
@@ -116,13 +122,13 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
 
                                 }
                             })
-                            .setNegativeButton(android.R.string.no, null).show();
+                            .setNegativeButton("No", null).show();
                 } else {
                     new AlertDialog.Builder(mActivity)
-                            .setTitle("Add favorite?")
-                            .setMessage("Do you really want to add favorite?")
+                            .setTitle("Add to favorites?")
+                            .setMessage("Are you sure you want to add this App to your favorites?")
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -136,77 +142,18 @@ public class AppAdapter extends ArrayAdapter<Data> implements SetImageAsync.IDat
 
                                 }
                             })
-                            .setNegativeButton(android.R.string.no, null).show();
+                            .setNegativeButton("No", null).show();
                 }
 
 
             }
         });
 
-
-        //rg = (RadioGroup) convertView.findViewById(R.id.game_list_radio_group);
-            //tv = (TextView) rowLayout.findViewById(R.id.appInfo);
-           // Log.d("Adapter", data.getTitle());
-           // Log.d("Adapter", "SIZE " + position);
-            //favorite_image = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
-            //favorite_image.setOnClickListener(checkFavoriteHandler);
-            //game_image = (ImageView) rowLayout.findViewById(R.id.appImage);
-            //viewHolder.favoriteImage = (ImageButton) rowLayout.findViewById(R.id.favoriteImage);
-            //viewHolder.favoriteImage.setId(Integer.parseInt(data.getId()));
-            //Log.d("Adapter", "ID: " + favorite_image.getId());
-
-
-            //String created_URL = data.getImage();
-            //new GetGameInfoAsync(GameAdapter.this).execute(created_URL);
-
-            //new SetImageAsync(AppAdapter.this).execute(data.getImage());
-
-            //tv.setId(Integer.parseInt(data.getId()));
-            //RadioButton rb = (RadioButton) convertView.findViewById(R.id.game_radio_button);
-            //rb.setText(data.getTitle());
-            //rg.addView(rb);
-
-
-
-
-
-
         return rowView;
     }
 
 
 
-    /*public void setupData(final ArrayList<Data> s) {
-
-
-        try {
-            if (s.size() > 0) {
-
-                if (s.get(0).getLogo() != null) {
-                    Log.d("IMAGE", s.get(0).getLogo().toString());
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            //Toast.makeText(GameAdapter.this, "API timed out or could not find game, please try again.", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }*/
-
-    public void setupImage(Bitmap bitmap) {
-
-        //ImageView game_image;
-        //game_image = (ImageView) convertView.findViewById(R.id.imageView);
-        game_image.setImageBitmap(bitmap);
-
-
-    }
-
-    public void changeFavorite(View v) {
-    }
 
 }
 

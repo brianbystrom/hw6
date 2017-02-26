@@ -1,5 +1,5 @@
 /*
-Assignment #: In Class 04
+Assignment #: HW 06
 File Name: Data.java
 Group Members: Brian Bystrom, Mohamed Salad
 */
