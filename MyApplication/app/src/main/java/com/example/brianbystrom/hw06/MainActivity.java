@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity implements GetAppsAsync.IDat
         setContentView(R.layout.activity_main);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor clearEditor = sharedpreferences.edit();
-        clearEditor.clear();
-        clearEditor.commit();
-
 
         String created_URL = "https://itunes.apple.com/us/rss/toppaidapplications/limit=25/json";
         new GetAppsAsync(MainActivity.this).execute(created_URL);
